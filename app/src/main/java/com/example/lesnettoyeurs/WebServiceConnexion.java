@@ -9,9 +9,16 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,10 +27,28 @@ import javax.xml.parsers.ParserConfigurationException;
 public class WebServiceConnexion {
 
     public static final String TAG = "WebServiceConnexion";
+    private String username;
+    private String password;
+
+    public WebServiceConnexion(/* Needs params here : String username, String password*/) {
+        try {
+            this.username=URLEncoder.encode("mbonbon","UTF-8");
+            this.password="76ed%djOZ$Kj";
+            Log.d(TAG,"pswd : "+this.password);
+            try {
+                this.password = String.format("%0" + (MessageDigest.getInstance("SHA-256").digest(this.password.getBytes(StandardCharsets.UTF_8)).length << 1) + "x",new BigInteger(1,MessageDigest.getInstance("SHA-256").digest(this.password.getBytes(StandardCharsets.UTF_8))));
+                Log.d(TAG,"pswd sha256: "+this.password);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void connectToWebService(){
         try {
-            URL url = new URL("http://51.68.124.144/nettoyeurs_srv/connexion.php");
+            URL url = new URL("http://51.68.124.144/nettoyeurs_srv/connexion.php?login="+username+"&passwd="+password);
             URLConnection cnx = url.openConnection();
             InputStream in = cnx.getInputStream();
 
@@ -35,6 +60,10 @@ public class WebServiceConnexion {
             Node nodeStatus = nl.item(0);
             String status = nodeStatus.getTextContent();
             Log.d(TAG, "Status : " + status);
+            if (Objects.equals(status, "OK")){
+                Log.d(TAG, "Session : " + xml.getElementsByTagName("SESSION").item(0).getTextContent());
+                Log.d(TAG, "Signature : " + xml.getElementsByTagName("SIGNATURE").item(0).getTextContent());
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
