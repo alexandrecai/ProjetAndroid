@@ -29,11 +29,11 @@ public class WebServiceCreationNettoyeur {
     public WebServiceCreationNettoyeur(String session, String signature) {
         this.session = session;
         this.signature = signature;
-        this.lon = 20.2;
-        this.lat = 10.5;
     }
 
-    public void callWebService() {
+    public void callWebService(Double lon, Double lat) {
+        this.lon = lon;
+        this.lat = lat;
         try {
             URL url = new URL("http://51.68.124.144/nettoyeurs_srv/new_nettoyeur.php?session=" + this.session + "&signature=" + this.signature + "&lon=" + this.lon + "&lat=" + this.lat);
             URLConnection cnx = url.openConnection();
