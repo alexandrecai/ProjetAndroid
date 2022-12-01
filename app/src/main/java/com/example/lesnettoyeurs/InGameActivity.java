@@ -1,27 +1,38 @@
 package com.example.lesnettoyeurs;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class InGameActivity extends AppCompatActivity {
+public class InGameActivity extends AppCompatActivity implements LocationListener{
 
     private String session;
     private String signature;
     private Double actual_lon;
     private Double actual_lat;
+    private LocationManager locationManager;
+    private WebServiceCreationNettoyeur ws_creation;
 
-    private FusedLocationProviderClient fusedLocationClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,36 +47,62 @@ public class InGameActivity extends AppCompatActivity {
 
         tv_session.setText(this.session);
         tv_signature.setText(this.signature);
+        Button bt_creerNettoyeur = findViewById(R.id.buttonCreationNettoyeur);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(InGameActivity.this,new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+
+            },100);
+        }
+
         getLocation();
 
+
+
         new Thread(() -> {
-            WebServiceCreationNettoyeur ws_creation = new WebServiceCreationNettoyeur(this.session,this.signature);
-            ws_creation.callWebService(20.2, 10.5);
+            ws_creation = new WebServiceCreationNettoyeur(this.session, this.signature);
         }).start();
 
+        
+        bt_creerNettoyeur.setOnClickListener(view -> new Thread(()->{
+
+            if(actual_lon != null && actual_lat != null){
+                String status = ws_creation.callWebService(actual_lon, actual_lat);
+                this.runOnUiThread(() -> {
+                    if(actual_lon != null && actual_lat != null){
+                        Toast ts_creerNettoyeur = Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+                        ts_creerNettoyeur.show();
+                    }
+                });
+            }
+        }).start());
 
     }
 
-    public void getLocation(){
+    @SuppressLint("MissingPermission")
+    private void getLocation() {
+        try {
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,0,InGameActivity.this);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("testLocation", "ici");
-
-            return;
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, location -> {
-                    Log.d("testLocation", "null");
-                    // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                        actual_lon = location.getLongitude();
-                        actual_lat = location.getLatitude();
+    }
 
-                        Log.d("testLocation", "lon = " + actual_lon);
-                        Log.d("testLocation", "lat = " + actual_lat);
-                    }
-                });
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        actual_lat = location.getLatitude();
+        actual_lon = location.getLongitude();
+        Log.d("testLocation", "Lat = " + actual_lat + " Lng = " + actual_lon);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getLocation();
     }
 }

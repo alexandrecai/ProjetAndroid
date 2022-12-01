@@ -31,9 +31,10 @@ public class WebServiceCreationNettoyeur {
         this.signature = signature;
     }
 
-    public void callWebService(Double lon, Double lat) {
+    public String callWebService(Double lon, Double lat) {
         this.lon = lon;
         this.lat = lat;
+        String status = "Probleme lors de l'appel au webservice";
         try {
             URL url = new URL("http://51.68.124.144/nettoyeurs_srv/new_nettoyeur.php?session=" + this.session + "&signature=" + this.signature + "&lon=" + this.lon + "&lat=" + this.lat);
             URLConnection cnx = url.openConnection();
@@ -45,7 +46,7 @@ public class WebServiceCreationNettoyeur {
 
             NodeList nl = xml.getElementsByTagName("STATUS");
             Node nodeStatus = nl.item(0);
-            String status = nodeStatus.getTextContent();
+            status = nodeStatus.getTextContent();
 
             Log.d(TAG,"status = " + status);
 
@@ -59,5 +60,6 @@ public class WebServiceCreationNettoyeur {
         } catch (SAXException e) {
             e.printStackTrace();
         }
+        return status;
     }
 }
