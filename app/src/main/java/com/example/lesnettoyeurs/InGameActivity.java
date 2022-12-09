@@ -2,14 +2,14 @@ package com.example.lesnettoyeurs;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
+
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,9 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 
 public class InGameActivity extends AppCompatActivity implements LocationListener{
 
@@ -57,7 +55,11 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             },100);
         }
 
-        getLocation();
+        if (ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED){
+            getLocation();
+        }
+
 
 
 
@@ -81,11 +83,35 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED){
+            getLocation();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("onResume", "resume");
+        if (ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            getLocation();
+        }
+    }
+
+
+
+
+    // ##################################### Geolocalisation #####################################
+
     @SuppressLint("MissingPermission")
     private void getLocation() {
         try {
             locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,0,InGameActivity.this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,InGameActivity.this);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -100,9 +126,19 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
         Log.d("testLocation", "Lat = " + actual_lat + " Lng = " + actual_lon);
     }
 
+
     @Override
-    protected void onStart() {
-        super.onStart();
-        getLocation();
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
     }
 }
