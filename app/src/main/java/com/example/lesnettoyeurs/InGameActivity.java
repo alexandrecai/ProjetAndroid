@@ -3,6 +3,7 @@ package com.example.lesnettoyeurs;
 import android.Manifest;
 import android.annotation.SuppressLint;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -61,6 +62,7 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
         Button bt_creerNettoyeur = findViewById(R.id.buttonCreationNettoyeur);
         Button bt_modeVoyage = findViewById(R.id.buttonModeVoyage);
         Button bt_remiseenjeu = findViewById(R.id.buttonRemiseEnJeu);
+        Button bt_stats = findViewById(R.id.buttonStats);
 
         if (ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
@@ -138,6 +140,13 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                 });
             }
         }).start());
+
+        bt_stats.setOnClickListener(view -> {
+            Intent intent = new Intent(this,StatsActivity.class);
+            intent.putExtra("session",this.session);
+            intent.putExtra("signature",this.signature);
+            startActivity(intent);
+        });
 
     }
 

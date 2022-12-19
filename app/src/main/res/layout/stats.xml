@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="368dp">
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.20">
+
+                <TextView
+                    android:id="@+id/textViewStatsName"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Name : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsNameValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.6">
+
+                <TextView
+                    android:id="@+id/textViewStatsValue"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Value : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsValueValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.41000003">
+
+                <TextView
+                    android:id="@+id/textViewStatsLon"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Longitude : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsLonValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.51">
+
+                <TextView
+                    android:id="@+id/textViewStatsLat"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Latitude : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsLatValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewStatsJoueurTitre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stats du joueur"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.091" />
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.31">
+
+                <TextView
+                    android:id="@+id/textViewStatsStatus"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Status : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsStatusValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="360dp">
+
+            <TextView
+                android:id="@+id/textViewStatsEquipeTitre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stats de l'equipe"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.051"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.085" />
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.20">
+
+                <TextView
+                    android:id="@+id/textViewStatsEquipeVal"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Value : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsEquipeValValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3">
+
+                <TextView
+                    android:id="@+id/textViewStatsAdvValue"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Adversaire value : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsAdvValueValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="28dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.40">
+
+                <TextView
+                    android:id="@+id/textViewStatsActiveMembers"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Active members : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsActiveMembersValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonStatsRetour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retour"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.717" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

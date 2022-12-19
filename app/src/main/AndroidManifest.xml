@@ -33,6 +33,7 @@
                 android:value="" />
         </activity>
         <activity android:name="com.example.lesnettoyeurs.InGameActivity" />
+        <activity android:name="com.example.lesnettoyeurs.StatsActivity" />
     </application>
 
 </manifest>
