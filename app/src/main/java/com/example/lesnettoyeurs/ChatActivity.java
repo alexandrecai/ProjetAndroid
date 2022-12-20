@@ -3,6 +3,8 @@ package com.example.lesnettoyeurs;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +22,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesFragment.
     private MessagesFragment messagesFragment;
     private List<Message> listMessages;
     private WebServiceLastMSG ws_lastmessages;
+    private WebServiceNewMSG ws_newmessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesFragment.
 
         new Thread(() -> {
             ws_lastmessages = new WebServiceLastMSG(this.session, this.signature);
+            ws_newmessage = new WebServiceNewMSG(this.session, this.signature);
         }).start();
 
         bt_retour.setOnClickListener(view -> {
@@ -49,6 +53,29 @@ public class ChatActivity extends AppCompatActivity implements MessagesFragment.
                 raffaichirMessages();
             }
         }, 1000, 2000);
+
+
+        Button bt_envoyer = findViewById(R.id.buttonChatEnvoyer);
+        EditText et_message = findViewById(R.id.editTextMessage);
+
+        bt_envoyer.setOnClickListener(view -> new Thread(()->{
+            String message = et_message.getText().toString();
+
+            String status = ws_newmessage.callWebService(message);
+            try {
+                runOnUiThread(() -> {
+                    et_message.setText("");
+                });
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+
+        }).start());
+
+
     }
 
     @Override

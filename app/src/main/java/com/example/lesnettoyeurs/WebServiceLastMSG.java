@@ -37,7 +37,7 @@ public class WebServiceLastMSG {
         ArrayList<Message> aAjouter = new ArrayList<Message>();
         try {
             URL url = new URL("http://51.68.124.144/nettoyeurs_srv/last_msgs.php?session=" + this.session + "&signature=" + this.signature);
-            Log.d(TAG, "url = " + url);
+            //Log.d(TAG, "url = " + url);
             URLConnection cnx = url.openConnection();
             InputStream in = cnx.getInputStream();
 
