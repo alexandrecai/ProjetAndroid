@@ -63,6 +63,7 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
         Button bt_modeVoyage = findViewById(R.id.buttonModeVoyage);
         Button bt_remiseenjeu = findViewById(R.id.buttonRemiseEnJeu);
         Button bt_stats = findViewById(R.id.buttonStats);
+        Button bt_chat = findViewById(R.id.buttonChat);
 
         if (ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
@@ -143,6 +144,13 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
 
         bt_stats.setOnClickListener(view -> {
             Intent intent = new Intent(this,StatsActivity.class);
+            intent.putExtra("session",this.session);
+            intent.putExtra("signature",this.signature);
+            startActivity(intent);
+        });
+
+        bt_chat.setOnClickListener(view -> {
+            Intent intent = new Intent(this,ChatActivity.class);
             intent.putExtra("session",this.session);
             intent.putExtra("signature",this.signature);
             startActivity(intent);

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:orientation="vertical"
+    tools:context="com.example.lesnettoyeurs.ChatActivity">
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:name="com.example.lesnettoyeurs.MessagesFragment"
+        android:id="@+id/mainNoteFrag"
+        tools:layout="@layout/fragment_message_list" />
+
+    <Button
+        android:id="@+id/buttonChatRetour"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:text="Retour" />
+
+</LinearLayout>
