@@ -91,9 +91,11 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             t.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if(actual_lon != null && actual_lat != null){
+                    if(actual_lon != null && actual_lat != null && ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED){
                         String status = ws_majposition.callWebService(actual_lon, actual_lat, availableContractList, ennemisList);
-                        
+
+
                         for (Contrat contrat: availableContractList) {
                             Log.d(TAG, "cible_id = " + contrat.getCible_id() + " - value = " + contrat.getValue() + " - lon = " + contrat.getLon() + " - lat = " + contrat.getLat());
                         }
@@ -102,6 +104,7 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                             Log.d(TAG, "net_id = " + ennemi.getNet_id() + " - value = " + ennemi.getValue() + " - lon = " + ennemi.getLon() + " - lat = " + ennemi.getLat() + " - lifespan = " + ennemi.getLifespan());
                         }
                     }
+
                 }
             }, 2000, 10000);
         }).start();
