@@ -3,31 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/background"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="30dp"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="368dp">
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewStatsJoueurTitre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginBottom="20dp"
+                android:text="Stats du joueur"
+                android:textSize="30dp" />
 
             <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="28dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.20">
+                android:background="@color/dark_line"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/textViewStatsName"
-                    android:layout_width="55dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Name : " />
@@ -41,25 +53,22 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="28dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.6">
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@color/light_line"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textViewStatsValue"
-                    android:layout_width="55dp"
+                    android:id="@+id/textViewStatsStatus"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Value : " />
+                    android:text="Status : " />
 
                 <TextView
-                    android:id="@+id/textViewStatsValueValue"
+                    android:id="@+id/textViewStatsStatusValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -67,19 +76,39 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="28dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.41000003">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:background="@color/dark_line"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewStatsLat"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Latitude : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsLatValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:background="@color/light_line"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/textViewStatsLon"
-                    android:layout_width="55dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Longitude : " />
@@ -93,106 +122,64 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="28dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.51">
-
-                <TextView
-                    android:id="@+id/textViewStatsLat"
-                    android:layout_width="55dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Latitude : " />
-
-                <TextView
-                    android:id="@+id/textViewStatsLatValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="null" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textViewStatsJoueurTitre"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Stats du joueur"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.05"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.091" />
-
-            <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="28dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.31">
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:background="@color/dark_line"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textViewStatsStatus"
-                    android:layout_width="55dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Status : " />
-
-                <TextView
-                    android:id="@+id/textViewStatsStatusValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="null" />
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="360dp">
-
-            <TextView
-                android:id="@+id/textViewStatsEquipeTitre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Stats de l'equipe"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.051"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.085" />
-
-            <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="28dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.20">
-
-                <TextView
-                    android:id="@+id/textViewStatsEquipeVal"
-                    android:layout_width="55dp"
+                    android:id="@+id/textViewStatsValue"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Value : " />
 
                 <TextView
-                    android:id="@+id/textViewStatsEquipeValValue"
+                    android:id="@+id/textViewStatsValueValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="null" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewStatsEquipeTitre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginBottom="20dp"
+                android:textSize="30dp"
+                android:text="Stats de l'equipe" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:background="@color/dark_line"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewStatsActiveMembers"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Active members : " />
+
+                <TextView
+                    android:id="@+id/textViewStatsActiveMembersValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -200,19 +187,16 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="28dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.3">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:background="@color/light_line"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/textViewStatsAdvValue"
-                    android:layout_width="55dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Adversaire value : " />
@@ -226,43 +210,37 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="28dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.40">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:background="@color/dark_line"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textViewStatsActiveMembers"
-                    android:layout_width="55dp"
+                    android:id="@+id/textViewStatsEquipeVal"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Active members : " />
+                    android:text="Value : " />
 
                 <TextView
-                    android:id="@+id/textViewStatsActiveMembersValue"
+                    android:id="@+id/textViewStatsEquipeValValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="null" />
+
             </LinearLayout>
+        </LinearLayout>
 
-            <Button
-                android:id="@+id/buttonStatsRetour"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Retour"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.717" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/buttonStatsRetour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:text="Retour" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

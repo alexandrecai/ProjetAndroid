@@ -6,9 +6,10 @@
         android:id="@+id/list"
         android:name="com.example.jamian.first.NoteFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:background="@color/light_line"
         app:layoutManager="LinearLayoutManager"
         tools:context=".MessagesFragment"
         tools:listitem="@layout/fragment_message"/>
