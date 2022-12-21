@@ -91,15 +91,16 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             t.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    String status = ws_majposition.callWebService(actual_lon, actual_lat, availableContractList, ennemisList);
+                    if(actual_lon != null && actual_lat != null){
+                        String status = ws_majposition.callWebService(actual_lon, actual_lat, availableContractList, ennemisList);
+                        
+                        for (Contrat contrat: availableContractList) {
+                            Log.d(TAG, "cible_id = " + contrat.getCible_id() + " - value = " + contrat.getValue() + " - lon = " + contrat.getLon() + " - lat = " + contrat.getLat());
+                        }
 
-
-                    for (Contrat contrat: availableContractList) {
-                        Log.d(TAG, "cible_id = " + contrat.getCible_id() + " - value = " + contrat.getValue() + " - lon = " + contrat.getLon() + " - lat = " + contrat.getLat());
-                    }
-
-                    for (NettoyeurEnnemi ennemi: ennemisList) {
-                        Log.d(TAG, "net_id = " + ennemi.getNet_id() + " - value = " + ennemi.getValue() + " - lon = " + ennemi.getLon() + " - lat = " + ennemi.getLat() + " - lifespan = " + ennemi.getLifespan());
+                        for (NettoyeurEnnemi ennemi: ennemisList) {
+                            Log.d(TAG, "net_id = " + ennemi.getNet_id() + " - value = " + ennemi.getValue() + " - lon = " + ennemi.getLon() + " - lat = " + ennemi.getLat() + " - lifespan = " + ennemi.getLifespan());
+                        }
                     }
                 }
             }, 2000, 10000);
