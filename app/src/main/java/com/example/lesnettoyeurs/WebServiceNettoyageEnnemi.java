@@ -17,21 +17,21 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class WebServiceNettoyageCible {
+public class WebServiceNettoyageEnnemi {
 
-    public static final String TAG = "WbSrvcNettoyageCible";
+    public static final String TAG = "WbSrvcNettoyageEnnemi";
     private String session;
     private String signature;
 
-    public WebServiceNettoyageCible(String session, String signature) {
+    public WebServiceNettoyageEnnemi(String session, String signature) {
         this.session = session;
         this.signature = signature;
     }
 
-    public String callWebService(String cible_id) {
+    public String callWebService(String net_id) {
         String status = "Probleme lors de l'appel au webservice";
         try {
-            URL url = new URL("http://51.68.124.144/nettoyeurs_srv/frappe_cible.php?session=" + this.session + "&signature=" + this.signature + "&cible_id=" + cible_id);
+            URL url = new URL("http://51.68.124.144/nettoyeurs_srv/frappe_net.php?session=" + this.session + "&signature=" + this.signature + "&net_id=" + net_id);
             //Log.d(TAG, "url = " + url);
             URLConnection cnx = url.openConnection();
             InputStream in = cnx.getInputStream();
@@ -54,20 +54,13 @@ public class WebServiceNettoyageCible {
                 NodeList nlOutcome = nodeParam.getChildNodes();
 
                 Node nodeOutcome = nlOutcome.item(0);
-                Node nodeDeteced = nlOutcome.item(1);
 
 
-                if(nodeOutcome.getTextContent().equals("1") && nodeDeteced.getTextContent().equals("1")){
+                if(nodeOutcome.getTextContent().equals("1")){
                     return "success but you've been detected";
                 }
-                else if(nodeOutcome.getTextContent().equals("1") && nodeDeteced.getTextContent().equals("0")){
-                    return "success";
-                }
-                else if(nodeOutcome.getTextContent().equals("0") && nodeDeteced.getTextContent().equals("1")){
-                    return "fail and you've been deteced";
-                }
                 else {
-                    return "fail but no detection";
+                    return "fail and you've been detected";
                 }
             }
         } catch (
