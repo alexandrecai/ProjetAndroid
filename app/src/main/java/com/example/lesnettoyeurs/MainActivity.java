@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                     this.runOnUiThread(() -> {
                         Toast toast_wc = Toast.makeText(getApplicationContext(),"Login ou mot de passe incorrect", Toast.LENGTH_SHORT);
                         toast_wc.show();
+                        EditText editText_password = findViewById(R.id.editTextPassword);
+                        editText_password.setText("");
                     });
                 }
                 else if(identifiants_connexion.get("status").equals("KO-technical error")){
