@@ -3,12 +3,14 @@ package com.example.lesnettoyeurs;
 import android.Manifest;
 import android.annotation.SuppressLint;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import android.widget.Button;
@@ -19,6 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.views.MapView;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -41,12 +47,15 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
     private ArrayList<Contrat> availableContractList;
     private ArrayList<NettoyeurEnnemi> ennemisList;
 
-
+    protected MapView map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.in_game);
+
+        Context ctx = getApplicationContext();
+        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
         TextView tv_session = findViewById(R.id.textViewSession);
         TextView tv_signature = findViewById(R.id.textViewSignature);
@@ -78,7 +87,8 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             getLocation();
         }
 
-
+        map = (MapView) findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK);
 
 
         new Thread(() -> {
