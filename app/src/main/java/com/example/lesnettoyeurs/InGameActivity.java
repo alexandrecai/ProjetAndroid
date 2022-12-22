@@ -22,8 +22,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
 
 import java.util.ArrayList;
@@ -87,8 +90,18 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             getLocation();
         }
 
+        // add options to the map
         map = (MapView) findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
+        map.setBuiltInZoomControls(true);
+        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
+        map.setMultiTouchControls(true);
+        IMapController mapController = map.getController();
+        mapController.setZoom(17.0);
+        GeoPoint startPoint = new GeoPoint(47.8437, 1.9344);
+        mapController.setCenter(startPoint);
+        map.setMinZoomLevel(17.0);
+        map.setMaxZoomLevel(19.0);
 
 
         new Thread(() -> {
