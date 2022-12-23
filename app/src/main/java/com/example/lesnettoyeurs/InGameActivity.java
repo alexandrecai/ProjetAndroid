@@ -29,8 +29,16 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,8 +56,10 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
     private WebServiceMajPosition ws_majposition;
     private WebServiceModeVoyage ws_modevoyage;
     private WebServiceRemiseEnJeu ws_remiseenjeu;
-    private ArrayList<Contrat> availableContractList;
+    private WebServiceNettoyageCible ws_nettoyageCible;
+    private WebServiceNettoyageEnnemi ws_nettoyageEnnemi;
     private ArrayList<NettoyeurEnnemi> ennemisList;
+    private ArrayList<Contrat> availableContractList;
 
     protected MapView map;
 
@@ -93,12 +103,31 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
         map.setBuiltInZoomControls(true);
         map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
         map.setMultiTouchControls(true);
+
+        // default zoom
         IMapController mapController = map.getController();
         mapController.setZoom(17.0);
-        GeoPoint startPoint = new GeoPoint(47.8437, 1.9344);
-        mapController.setCenter(startPoint);
+
+        // center map
+        GeoPoint centerPoint = new GeoPoint(47.8437, 1.9344);
+        mapController.setCenter(centerPoint);
+
+        // min & max zoom
         map.setMinZoomLevel(17.0);
         map.setMaxZoomLevel(19.0);
+
+        // enable rotation
+        RotationGestureOverlay rotation = new RotationGestureOverlay(ctx, map);
+        rotation.setEnabled(true);
+        map.getOverlays().add(rotation);
+
+        //temp
+        List<Overlay> myOverlays = map.getOverlays();
+        Log.d(TAG, "nb overlays : " + myOverlays.size());
+        for(Overlay overlay: myOverlays){
+            Log.d(TAG, overlay.toString());
+        }
+
 
 
         new Thread(() -> {
@@ -106,6 +135,8 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             ws_majposition = new WebServiceMajPosition(this.session, this.signature);
             ws_modevoyage = new WebServiceModeVoyage(this.session, this.signature);
             ws_remiseenjeu = new WebServiceRemiseEnJeu(this.session, this.signature);
+            ws_nettoyageCible = new WebServiceNettoyageCible(this.session, this.signature);
+            ws_nettoyageEnnemi = new WebServiceNettoyageEnnemi(this.session, this.signature);
 
             Timer t = new Timer();
             t.schedule(new TimerTask() {
@@ -123,6 +154,21 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                         for (NettoyeurEnnemi ennemi: ennemisList) {
                             Log.d(TAG, "net_id = " + ennemi.getNet_id() + " - value = " + ennemi.getValue() + " - lon = " + ennemi.getLon() + " - lat = " + ennemi.getLat() + " - lifespan = " + ennemi.getLifespan());
                         }
+
+                        //delete old markers
+                        List<Overlay> overlays = map.getOverlays();
+                        Log.d(TAG, "nb overlays : " + overlays.size());
+                        int removerdMarkers = 0; // temp
+                        for (Overlay overlay: overlays){
+                            if(overlay.getClass().equals(Marker.class)){
+                                overlays.remove(overlay);
+                                removerdMarkers++;
+                            }
+                        }
+                        Log.d(TAG, "rm markers : " + removerdMarkers);
+
+                        displayContractOnMap(map,availableContractList);
+                        displayEnnemiesOnMap(map,ennemisList);
                     }
 
                 }
@@ -180,6 +226,41 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             startActivity(intent);
         });
 
+    }
+
+
+    private void displayContractOnMap(MapView map, ArrayList<Contrat> contrats){
+
+        for (Contrat contrat: contrats){
+            Marker marker = new Marker(map);
+            marker.setDraggable(false);
+            marker.setPosition(new GeoPoint(contrat.getLat(), contrat.getLon()));
+            marker.setOnMarkerClickListener((marker1, mapView) -> {
+                new Thread(() -> {
+                    String status = ws_nettoyageCible.callWebService(String.valueOf(contrat.getCible_id()));
+                    Log.d(TAG, "Status nettoyage Cible : " + status);
+                }).start();
+                return false;
+            });
+            map.getOverlays().add(marker);
+        }
+    }
+
+    private void displayEnnemiesOnMap(MapView map, ArrayList<NettoyeurEnnemi> ennemies){
+
+        for (NettoyeurEnnemi ennemie: ennemies){
+            Marker marker = new Marker(map);
+            marker.setDraggable(false);
+            marker.setPosition(new GeoPoint(ennemie.getLat(), ennemie.getLon()));
+            marker.setOnMarkerClickListener((marker1, mapView) -> {
+                new Thread(() -> {
+                    String status = ws_nettoyageEnnemi.callWebService(String.valueOf(ennemie.getNet_id()));
+                    Log.d(TAG, "Status nettoyage Ennemi : " + status);
+                }).start();
+                return false;
+            });
+            map.getOverlays().add(marker);
+        }
     }
 
     @Override
