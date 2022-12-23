@@ -6,6 +6,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -36,7 +41,9 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -167,6 +174,7 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                         }
                         Log.d(TAG, "rm markers : " + removerdMarkers);
 
+                        displayMyselfOnMap(map);
                         displayContractOnMap(map,availableContractList);
                         displayEnnemiesOnMap(map,ennemisList);
                     }
@@ -228,12 +236,28 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
 
     }
 
+    private void displayMyselfOnMap(MapView map){
+        Marker marker = new Marker(map);
+        marker.setDraggable(false);
+        marker.setPosition(new GeoPoint(actual_lat,actual_lon));
+        map.getOverlays().add(marker);
+    }
 
     private void displayContractOnMap(MapView map, ArrayList<Contrat> contrats){
 
         for (Contrat contrat: contrats){
             Marker marker = new Marker(map);
             marker.setDraggable(false);
+
+            try {
+                @SuppressLint("ResourceType") Drawable icon = Drawable.createFromXml(getResources(),getResources().getXml(R.drawable.iconcible));
+                marker.setIcon(icon);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
+
             marker.setPosition(new GeoPoint(contrat.getLat(), contrat.getLon()));
             marker.setOnMarkerClickListener((marker1, mapView) -> {
                 new Thread(() -> {
