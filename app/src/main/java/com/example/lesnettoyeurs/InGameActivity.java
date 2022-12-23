@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,8 +61,6 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
-        TextView tv_session = findViewById(R.id.textViewSession);
-        TextView tv_signature = findViewById(R.id.textViewSignature);
 
         this.session = getIntent().getStringExtra("session");
         this.signature = getIntent().getStringExtra("signature");
@@ -69,13 +68,11 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
         this.availableContractList = new ArrayList<Contrat>();
         this.ennemisList = new ArrayList<NettoyeurEnnemi>();
 
-        tv_session.setText(this.session);
-        tv_signature.setText(this.signature);
         Button bt_creerNettoyeur = findViewById(R.id.buttonCreationNettoyeur);
-        Button bt_modeVoyage = findViewById(R.id.buttonModeVoyage);
-        Button bt_remiseenjeu = findViewById(R.id.buttonRemiseEnJeu);
-        Button bt_stats = findViewById(R.id.buttonStats);
-        Button bt_chat = findViewById(R.id.buttonChat);
+        ImageButton bt_modeVoyage = findViewById(R.id.buttonModeVoyage);
+        ImageButton bt_remiseenjeu = findViewById(R.id.buttonRemiseEnJeu);
+        ImageButton bt_stats = findViewById(R.id.buttonStats);
+        ImageButton bt_chat = findViewById(R.id.buttonChat);
 
         if (ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
