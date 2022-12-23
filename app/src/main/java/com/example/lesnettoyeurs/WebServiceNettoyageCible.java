@@ -58,16 +58,16 @@ public class WebServiceNettoyageCible {
 
 
                 if(nodeOutcome.getTextContent().equals("1") && nodeDeteced.getTextContent().equals("1")){
-                    return "success but you've been detected";
+                    return "Succès mais vous avez été détecté (La cible va bientot disparaître)";
                 }
                 else if(nodeOutcome.getTextContent().equals("1") && nodeDeteced.getTextContent().equals("0")){
-                    return "success";
+                    return "Succès (La cible va bientot disparaître)";
                 }
                 else if(nodeOutcome.getTextContent().equals("0") && nodeDeteced.getTextContent().equals("1")){
-                    return "fail and you've been deteced";
+                    return "Raté et vous avez été détecté";
                 }
                 else {
-                    return "fail but no detection";
+                    return "Raté mais vous n'avez pas été détecté";
                 }
             }
         } catch (

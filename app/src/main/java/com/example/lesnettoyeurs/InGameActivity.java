@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -65,10 +66,12 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
     private WebServiceRemiseEnJeu ws_remiseenjeu;
     private WebServiceNettoyageCible ws_nettoyageCible;
     private WebServiceNettoyageEnnemi ws_nettoyageEnnemi;
+    private WebServiceStatsNettoyeur ws_statsnettoyeur;
     private ArrayList<NettoyeurEnnemi> ennemisList;
     private ArrayList<Contrat> availableContractList;
 
     protected MapView map;
+    private StatsNettoyeur statsNettoyeur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +89,14 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
         this.ennemisList = new ArrayList<NettoyeurEnnemi>();
 
         Button bt_creerNettoyeur = findViewById(R.id.buttonCreationNettoyeur);
+        bt_creerNettoyeur.setVisibility(View.INVISIBLE);
         ImageButton bt_modeVoyage = findViewById(R.id.buttonModeVoyage);
         ImageButton bt_remiseenjeu = findViewById(R.id.buttonRemiseEnJeu);
         ImageButton bt_stats = findViewById(R.id.buttonStats);
         ImageButton bt_chat = findViewById(R.id.buttonChat);
+        bt_modeVoyage.setVisibility(View.INVISIBLE);
+        bt_remiseenjeu.setVisibility(View.INVISIBLE);
+        bt_stats.setVisibility(View.INVISIBLE);
 
         if (ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
@@ -144,6 +151,21 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             ws_remiseenjeu = new WebServiceRemiseEnJeu(this.session, this.signature);
             ws_nettoyageCible = new WebServiceNettoyageCible(this.session, this.signature);
             ws_nettoyageEnnemi = new WebServiceNettoyageEnnemi(this.session, this.signature);
+            ws_statsnettoyeur = new WebServiceStatsNettoyeur(this.session, this.signature);
+
+            try {
+                statsNettoyeur = ws_statsnettoyeur.callWebService();
+                if(statsNettoyeur.getStatus().equals("PACK") || statsNettoyeur.getStatus().equals("VOY")){
+                    bt_remiseenjeu.setVisibility(View.VISIBLE);
+                }
+                else {
+                    bt_modeVoyage.setVisibility(View.VISIBLE);
+                }
+                bt_stats.setVisibility(View.VISIBLE);
+            }
+            catch (Exception e){
+                bt_creerNettoyeur.setVisibility(View.VISIBLE);
+            }
 
             Timer t = new Timer();
             t.schedule(new TimerTask() {
@@ -177,6 +199,7 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                         displayMyselfOnMap(map);
                         displayContractOnMap(map,availableContractList);
                         displayEnnemiesOnMap(map,ennemisList);
+
                     }
 
                 }
@@ -189,7 +212,19 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                 String status = ws_creation.callWebService(actual_lon, actual_lat);
                 this.runOnUiThread(() -> {
                     if(actual_lon != null && actual_lat != null){
-                        Toast ts_creerNettoyeur = Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+                        Toast ts_creerNettoyeur;
+                        if(status.equals("OK")){
+                            ts_creerNettoyeur = Toast.makeText(getApplicationContext(),"Vous venez de créer votre nettoyeur",Toast.LENGTH_SHORT);
+                            bt_remiseenjeu.setVisibility(View.VISIBLE);
+                            bt_creerNettoyeur.setVisibility(View.INVISIBLE);
+                            bt_stats.setVisibility(View.VISIBLE);
+                        }
+                        else if(status.equals("KO - NOT IN 3IA")){
+                            ts_creerNettoyeur = Toast.makeText(getApplicationContext(),"Vous n'êtes pas au batiment 3IA",Toast.LENGTH_SHORT);
+                        }
+                        else {
+                            ts_creerNettoyeur = Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+                        }
                         ts_creerNettoyeur.show();
                     }
                 });
@@ -201,8 +236,16 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                 String status = ws_modevoyage.callWebService();
                 this.runOnUiThread(() -> {
                     if(actual_lon != null && actual_lat != null){
-                        Toast ts_modeVoyage = Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+                        Toast ts_modeVoyage;
+                        if(status.equals("OK")){
+                            ts_modeVoyage = Toast.makeText(getApplicationContext(),"Passage en mode voyage",Toast.LENGTH_SHORT);
+                        }
+                        else{
+                            ts_modeVoyage = Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+                        }
                         ts_modeVoyage.show();
+                        bt_remiseenjeu.setVisibility(View.VISIBLE);
+                        bt_modeVoyage.setVisibility(View.INVISIBLE);
                     }
                 });
             }
@@ -213,7 +256,18 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                 String status = ws_remiseenjeu.callWebService(actual_lon, actual_lat);
                 this.runOnUiThread(() -> {
                     if(actual_lon != null && actual_lat != null){
-                        Toast ts_remiseEnJeu = Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+                        Toast ts_remiseEnJeu;
+                        if(status.equals("OK")){
+                            bt_remiseenjeu.setVisibility(View.INVISIBLE);
+                            bt_modeVoyage.setVisibility(View.VISIBLE);
+                            ts_remiseEnJeu = Toast.makeText(getApplicationContext(),"Remise en jeu",Toast.LENGTH_SHORT);
+                        }
+                        else if(status.equals("KO - AGENT PACKING FOR TRANSIT")){
+                            ts_remiseEnJeu = Toast.makeText(getApplicationContext(),"En attente du mode voyage",Toast.LENGTH_SHORT);
+                        }
+                        else{
+                            ts_remiseEnJeu = Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+                        }
                         ts_remiseEnJeu.show();
                     }
                 });
@@ -239,7 +293,14 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
     private void displayMyselfOnMap(MapView map){
         Marker marker = new Marker(map);
         marker.setDraggable(false);
+        try {
+            @SuppressLint("ResourceType") Drawable icon = Drawable.createFromXml(getResources(),getResources().getXml(R.drawable.iconme));
+            marker.setIcon(icon);
+        } catch (IOException | XmlPullParserException e) {
+            e.printStackTrace();
+        }
         marker.setPosition(new GeoPoint(actual_lat,actual_lon));
+        marker.setInfoWindow(null);
         map.getOverlays().add(marker);
     }
 
@@ -252,9 +313,7 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             try {
                 @SuppressLint("ResourceType") Drawable icon = Drawable.createFromXml(getResources(),getResources().getXml(R.drawable.iconcible));
                 marker.setIcon(icon);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
+            } catch (IOException | XmlPullParserException e) {
                 e.printStackTrace();
             }
 
@@ -263,9 +322,20 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                 new Thread(() -> {
                     String status = ws_nettoyageCible.callWebService(String.valueOf(contrat.getCible_id()));
                     Log.d(TAG, "Status nettoyage Cible : " + status);
+                    this.runOnUiThread(() -> {
+                        Toast ts_status;
+                        if(status.equals("KO - TOO FAR")) {
+                            ts_status = Toast.makeText(getApplicationContext(), "Le contrat est trop loin", Toast.LENGTH_SHORT);
+                        }
+                        else{
+                            ts_status = Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+                        }
+                        ts_status.show();
+                    });
                 }).start();
                 return false;
             });
+            marker.setInfoWindow(null);
             map.getOverlays().add(marker);
         }
     }
@@ -275,14 +345,34 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
         for (NettoyeurEnnemi ennemie: ennemies){
             Marker marker = new Marker(map);
             marker.setDraggable(false);
+
+            try {
+                @SuppressLint("ResourceType") Drawable icon = Drawable.createFromXml(getResources(),getResources().getXml(R.drawable.iconennemi));
+                marker.setIcon(icon);
+            } catch (IOException | XmlPullParserException e) {
+                e.printStackTrace();
+            }
+
             marker.setPosition(new GeoPoint(ennemie.getLat(), ennemie.getLon()));
             marker.setOnMarkerClickListener((marker1, mapView) -> {
                 new Thread(() -> {
                     String status = ws_nettoyageEnnemi.callWebService(String.valueOf(ennemie.getNet_id()));
                     Log.d(TAG, "Status nettoyage Ennemi : " + status);
+                    this.runOnUiThread(() -> {
+                        Toast ts_status;
+                        if(status.equals("KO - TOO FAR")) {
+                            ts_status = Toast.makeText(getApplicationContext(), "L'ennemi est trop loin", Toast.LENGTH_SHORT);
+                        }
+                        else{
+                            ts_status = Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT);
+                        }
+                        ts_status.show();
+                    });
+
                 }).start();
                 return false;
             });
+            marker.setInfoWindow(null);
             map.getOverlays().add(marker);
         }
     }

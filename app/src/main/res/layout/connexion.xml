@@ -44,6 +44,7 @@
             android:inputType="textPersonName"
             android:padding="10dp"
             android:text=""
+            android:textColor="@color/light_dark"
             android:textColorHint="@color/light_dark" />
 
 
@@ -60,6 +61,7 @@
             android:textColorHint="@color/light_dark"
             android:drawablePadding="10dp"
             android:ems="10"
+            android:textColor="@color/light_dark"
             android:inputType="textPassword" />
 
         <Button

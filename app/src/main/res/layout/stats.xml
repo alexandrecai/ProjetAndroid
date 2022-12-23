@@ -44,7 +44,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/light_dark"
                     android:layout_weight="1"
-                    android:text="Name : " />
+                    android:text="Nom : " />
 
                 <TextView
                     android:id="@+id/textViewStatsNameValue"
@@ -144,7 +144,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/light_dark"
                     android:layout_weight="1"
-                    android:text="Value : " />
+                    android:text="Score personnel : " />
 
                 <TextView
                     android:id="@+id/textViewStatsValueValue"
@@ -188,7 +188,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/light_dark"
                     android:layout_weight="1"
-                    android:text="Active members : " />
+                    android:text="Membres actif : " />
 
                 <TextView
                     android:id="@+id/textViewStatsActiveMembersValue"
@@ -213,7 +213,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/light_dark"
                     android:layout_weight="1"
-                    android:text="Adversaire value : " />
+                    android:text="Score adversaires : " />
 
                 <TextView
                     android:id="@+id/textViewStatsAdvValueValue"
@@ -238,7 +238,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/light_dark"
                     android:layout_weight="1"
-                    android:text="Value : " />
+                    android:text="Score alliés : " />
 
                 <TextView
                     android:id="@+id/textViewStatsEquipeValValue"

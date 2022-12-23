@@ -57,10 +57,10 @@ public class WebServiceNettoyageEnnemi {
 
 
                 if(nodeOutcome.getTextContent().equals("1")){
-                    return "success but you've been detected";
+                    return "Succès mais vous avez été détecté (L'ennemi va bientot disparaître)";
                 }
                 else {
-                    return "fail and you've been detected";
+                    return "Raté et vous avez été détecté";
                 }
             }
         } catch (
