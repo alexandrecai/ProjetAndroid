@@ -26,6 +26,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginBottom="20dp"
+                android:textColor="@color/light_dark"
                 android:text="Stats du joueur"
                 android:textSize="30dp" />
 
@@ -41,6 +42,7 @@
                     android:id="@+id/textViewStatsName"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="Name : " />
 
@@ -48,6 +50,7 @@
                     android:id="@+id/textViewStatsNameValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="null" />
             </LinearLayout>
@@ -64,6 +67,7 @@
                     android:id="@+id/textViewStatsStatus"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="Status : " />
 
@@ -71,6 +75,7 @@
                     android:id="@+id/textViewStatsStatusValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="null" />
             </LinearLayout>
@@ -87,6 +92,7 @@
                     android:id="@+id/textViewStatsLat"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="Latitude : " />
 
@@ -94,6 +100,7 @@
                     android:id="@+id/textViewStatsLatValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="null" />
             </LinearLayout>
@@ -110,12 +117,14 @@
                     android:id="@+id/textViewStatsLon"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="Longitude : " />
 
                 <TextView
                     android:id="@+id/textViewStatsLonValue"
                     android:layout_width="wrap_content"
+                    android:textColor="@color/light_dark"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="null" />
@@ -133,6 +142,7 @@
                     android:id="@+id/textViewStatsValue"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="Value : " />
 
@@ -140,6 +150,7 @@
                     android:id="@+id/textViewStatsValueValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="null" />
             </LinearLayout>
@@ -159,6 +170,7 @@
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="30dp"
+                android:textColor="@color/light_dark"
                 android:layout_marginBottom="20dp"
                 android:textSize="30dp"
                 android:text="Stats de l'equipe" />
@@ -175,6 +187,7 @@
                     android:id="@+id/textViewStatsActiveMembers"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="Active members : " />
 
@@ -182,6 +195,7 @@
                     android:id="@+id/textViewStatsActiveMembersValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="null" />
             </LinearLayout>
@@ -198,6 +212,7 @@
                     android:id="@+id/textViewStatsAdvValue"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="Adversaire value : " />
 
@@ -205,6 +220,7 @@
                     android:id="@+id/textViewStatsAdvValueValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="null" />
             </LinearLayout>
@@ -221,6 +237,7 @@
                     android:id="@+id/textViewStatsEquipeVal"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="Value : " />
 
@@ -228,6 +245,7 @@
                     android:id="@+id/textViewStatsEquipeValValue"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:textColor="@color/light_dark"
                     android:layout_weight="1"
                     android:text="null" />
 
@@ -240,6 +258,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
+            android:background="@drawable/ovalbutton"
             android:text="Retour" />
 
     </LinearLayout>

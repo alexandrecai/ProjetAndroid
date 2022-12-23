@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,7 +56,7 @@ public class ChatActivity extends AppCompatActivity implements MessagesFragment.
         }, 1000, 2000);
 
 
-        Button bt_envoyer = findViewById(R.id.buttonChatEnvoyer);
+        ImageButton bt_envoyer = findViewById(R.id.buttonChatEnvoyer);
         EditText et_message = findViewById(R.id.editTextMessage);
 
         bt_envoyer.setOnClickListener(view -> new Thread(()->{

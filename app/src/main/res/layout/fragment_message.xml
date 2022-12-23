@@ -9,6 +9,7 @@
             android:id="@+id/id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/light_dark"
             android:textSize="12sp"
             android:textAppearance="?attr/textAppearanceListItem"/>
 
@@ -16,6 +17,7 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/light_dark"
             android:textSize="10sp"
             android:textAppearance="?attr/textAppearanceListItem"/>
 </LinearLayout>

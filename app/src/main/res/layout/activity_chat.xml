@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:layout_margin="10dp"
             android:orientation="horizontal">
 
@@ -29,25 +30,27 @@
                 android:id="@+id/editTextMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColorHint="@color/light_dark"
                 android:layout_margin="10dp"
                 android:hint="Ecrire un message"
                 android:ems="10"
                 android:inputType="textPersonName" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/buttonChatEnvoyer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textSize="10dp"
-                android:text="Envoyer" />
+                android:src="@drawable/iconsend"
+                android:background="@drawable/circlebutton"
+                android:textSize="10dp" />
         </LinearLayout>
 
         <fragment
             android:id="@+id/mainNoteFrag"
             android:name="com.example.lesnettoyeurs.MessagesFragment"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="400dp"
             tools:layout="@layout/fragment_message_list" />
 
         <Button
@@ -56,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
+            android:background="@drawable/ovalbutton"
             android:text="Retour" />
 
     </LinearLayout>
