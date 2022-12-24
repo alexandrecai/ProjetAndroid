@@ -35,10 +35,7 @@ public class WebServiceConnexion {
 
     public WebServiceConnexion(String login, String password) {
         try {
-            /*
-            this.username=URLEncoder.encode("mbonbon","UTF-8");
-            this.password="76ed%djOZ$Kj";
-             */
+
             this.username=URLEncoder.encode(login,"UTF-8");
             this.password=password;
             Log.d(TAG,"pswd : "+this.password);

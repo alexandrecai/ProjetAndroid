@@ -6,9 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,11 +17,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -35,12 +30,8 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -69,6 +60,7 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
     private WebServiceStatsNettoyeur ws_statsnettoyeur;
     private ArrayList<NettoyeurEnnemi> ennemisList;
     private ArrayList<Contrat> availableContractList;
+    private boolean gpsIsEnabled;
 
     protected MapView map;
     private StatsNettoyeur statsNettoyeur;
@@ -87,6 +79,8 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
 
         this.availableContractList = new ArrayList<Contrat>();
         this.ennemisList = new ArrayList<NettoyeurEnnemi>();
+        this.locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        this.gpsIsEnabled = true;
 
         Button bt_creerNettoyeur = findViewById(R.id.buttonCreationNettoyeur);
         bt_creerNettoyeur.setVisibility(View.INVISIBLE);
@@ -135,16 +129,12 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
         rotation.setEnabled(true);
         map.getOverlays().add(rotation);
 
-        //temp
-        List<Overlay> myOverlays = map.getOverlays();
-        Log.d(TAG, "nb overlays : " + myOverlays.size());
-        for(Overlay overlay: myOverlays){
-            Log.d(TAG, overlay.toString());
-        }
+
 
 
 
         new Thread(() -> {
+            // init ws
             ws_creation = new WebServiceCreationNettoyeur(this.session, this.signature);
             ws_majposition = new WebServiceMajPosition(this.session, this.signature);
             ws_modevoyage = new WebServiceModeVoyage(this.session, this.signature);
@@ -171,6 +161,16 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
             t.schedule(new TimerTask() {
                 @Override
                 public void run() {
+
+                    locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+                    Log.d(TAG,"actual lat : "+ actual_lat + " |actual lon : " + actual_lon);
+
+                    // Check if the gps has been enabled after launching the app
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)&& !gpsIsEnabled){
+                        Log.d(TAG,"Need reboot");
+                        finish();
+                        startActivity(getIntent());
+                    }
                     if(actual_lon != null && actual_lat != null && ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED){
                         String status = ws_majposition.callWebService(actual_lon, actual_lat, availableContractList, ennemisList);
@@ -186,19 +186,20 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
 
                         //delete old markers
                         List<Overlay> overlays = map.getOverlays();
-                        Log.d(TAG, "nb overlays : " + overlays.size());
-                        int removerdMarkers = 0; // temp
                         for (Overlay overlay: overlays){
                             if(overlay.getClass().equals(Marker.class)){
                                 overlays.remove(overlay);
-                                removerdMarkers++;
                             }
                         }
-                        Log.d(TAG, "rm markers : " + removerdMarkers);
+                        try {
+                            displayMyselfOnMap(map);
+                            displayContractOnMap(map,availableContractList);
+                            displayEnnemiesOnMap(map,ennemisList);
+                        }catch (NullPointerException e){
+                            finish();
+                            startActivity(getIntent());
+                        }
 
-                        displayMyselfOnMap(map);
-                        displayContractOnMap(map,availableContractList);
-                        displayEnnemiesOnMap(map,ennemisList);
 
                     }
 
@@ -389,7 +390,6 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("onResume", "resume");
         if (ContextCompat.checkSelfPermission(InGameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             getLocation();
@@ -404,8 +404,13 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
     @SuppressLint("MissingPermission")
     private void getLocation() {
         try {
-            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,InGameActivity.this);
+            if (!this.locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                Toast.makeText(getApplicationContext(),"Veuillez activer le GPS",Toast.LENGTH_SHORT).show();
+                this.gpsIsEnabled = false;
+            }
+            else{
+                this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,InGameActivity.this);
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -417,7 +422,7 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
     public void onLocationChanged(@NonNull Location location) {
         actual_lat = location.getLatitude();
         actual_lon = location.getLongitude();
-        Log.d("testLocation", "Lat = " + actual_lat + " Lng = " + actual_lon);
+        Log.d("Location", "Lat = " + actual_lat + " Lng = " + actual_lon);
     }
 
 
