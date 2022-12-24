@@ -191,6 +191,8 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                                 overlays.remove(overlay);
                             }
                         }
+
+                        // prevent fail if user return on connexion screen
                         try {
                             displayMyselfOnMap(map);
                             displayContractOnMap(map,availableContractList);
@@ -204,7 +206,7 @@ public class InGameActivity extends AppCompatActivity implements LocationListene
                     }
 
                 }
-            }, 2000, 10000);
+            }, 2000, 15000);
         }).start();
 
         
